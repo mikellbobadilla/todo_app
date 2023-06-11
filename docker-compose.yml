@@ -1,0 +1,16 @@
+version: '3.1'
+
+services:
+  db:
+    container_name: todo_app_db
+    image: mysql:8.0.33-debian
+    restart: no
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: helloRoot
+      MYSQL_DATABASE: todo_app
+      MYSQL_USER: spring
+      MYSQL_PASSWORD: helloSpring
+    volumes:
+      - ./mysql:/var/lib/mysql
