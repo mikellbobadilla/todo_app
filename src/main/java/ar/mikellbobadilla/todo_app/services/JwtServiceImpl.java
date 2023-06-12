@@ -15,7 +15,6 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class JwtServiceImpl implements JwtService {
-
   @Value("${jwt.secret}")
   private String KEY_SECRET;
 

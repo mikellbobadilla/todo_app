@@ -1,6 +1,5 @@
 package ar.mikellbobadilla.todo_app.exceptions;
 
-import com.auth0.jwt.exceptions.TokenExpiredException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
