@@ -29,8 +29,10 @@ public class TodoService {
   }
 
   public List<TodoDTO> getAll(String username){
-    // TODO: 12/6/2023 Tengo que modificar el jwt service para guardar el id del usuario 
-    return parseTodos(todoRepository.findAll());
+    User user = userRepository.findByUsername(username)
+      .orElseThrow(()-> new UsernameNotFoundException("User Not Found!"));
+    System.out.println(user.getId());
+    return parseTodos(todoRepository.getAllByUser(user.getId()));
   }
 
 

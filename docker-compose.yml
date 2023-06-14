@@ -3,7 +3,7 @@ version: '3.1'
 services:
   db:
     container_name: todo_app_db
-    image: mysql:8.0.33-debian
+    image: mysql:8.0.33
     restart: no
     ports:
       - '3306:3306'
