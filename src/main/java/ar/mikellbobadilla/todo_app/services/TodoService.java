@@ -40,7 +40,13 @@ public class TodoService {
     List<TodoDTO> todosResponse = new ArrayList<>();
     for(Todo todo: todos){
       todosResponse.add(
-        new TodoDTO(todo.getTitle(), todo.getContent(), todo.getStatus(), todo.getCreateAt())
+        new TodoDTO(
+          todo.getId() ,
+          todo.getTitle(),
+          todo.getContent(),
+          todo.getStatus(),
+          todo.getCreateAt()
+        )
       );
     }
     return todosResponse;
