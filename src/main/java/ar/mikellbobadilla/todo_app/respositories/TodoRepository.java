@@ -12,9 +12,9 @@ import java.util.List;
 public interface TodoRepository extends JpaRepository<Todo, Long> {
 
   @Query(value = """
-          SELECT t.* FROM todos t \s
-          INNER JOIN users u ON t.user_id = u.id \s
-          WHERE user_id = ?1 \s
+          select t.* from todos t \s
+          inner join users u on t.user_id = u.id \s
+          where u.username = ?1 \s
           """, nativeQuery = true)
-  List<Todo> getAllByUser(Long userId);
+  List<Todo> getAllByUser(String username);
 }

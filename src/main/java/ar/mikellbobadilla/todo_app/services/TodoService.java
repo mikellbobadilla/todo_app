@@ -1,6 +1,7 @@
 package ar.mikellbobadilla.todo_app.services;
 
 import ar.mikellbobadilla.todo_app.dto.TodoDTO;
+import ar.mikellbobadilla.todo_app.dto.UserDTO;
 import ar.mikellbobadilla.todo_app.entities.Todo;
 import ar.mikellbobadilla.todo_app.entities.User;
 import ar.mikellbobadilla.todo_app.respositories.TodoRepository;
@@ -29,10 +30,10 @@ public class TodoService {
   }
 
   public List<TodoDTO> getAll(String username){
-    User user = userRepository.findByUsername(username)
-      .orElseThrow(()-> new UsernameNotFoundException("User Not Found!"));
-    System.out.println(user.getId());
-    return parseTodos(todoRepository.getAllByUser(user.getId()));
+    if(userRepository.findByUsername(username).isEmpty()){
+      throw new UsernameNotFoundException("This user doesn't exists!");
+    }
+    return parseTodos(todoRepository.getAllByUser(username));
   }
 
 
@@ -45,7 +46,12 @@ public class TodoService {
           todo.getTitle(),
           todo.getContent(),
           todo.getStatus(),
-          todo.getCreateAt()
+          todo.getCreateAt(),
+          new UserDTO(
+            todo.getUser().getId(),
+            todo.getUser().getUsername(),
+            todo.getUser().getName()
+          )
         )
       );
     }
