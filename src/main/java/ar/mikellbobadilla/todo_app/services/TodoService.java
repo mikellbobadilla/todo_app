@@ -1,5 +1,6 @@
 package ar.mikellbobadilla.todo_app.services;
 
+import ar.mikellbobadilla.todo_app.dto.CreateTodoDTO;
 import ar.mikellbobadilla.todo_app.dto.TodoDTO;
 import ar.mikellbobadilla.todo_app.dto.UserDTO;
 import ar.mikellbobadilla.todo_app.entities.Todo;
@@ -21,12 +22,20 @@ public class TodoService {
   private final TodoRepository todoRepository;
   private final UserRepository userRepository;
 
-  public Todo create(TodoDTO todoDTO, String username)throws UsernameNotFoundException{
-    User user = userRepository.findByUsername(username)
-      .orElseThrow(()-> new UsernameNotFoundException("User Not Found!"));
-    Todo newTodo = new Todo(todoDTO.title(), todoDTO.content(), false, user, new Date());
+  public TodoDTO create(CreateTodoDTO createTodoDTO, String username) {
 
-    return todoRepository.save(newTodo);
+    User user = userRepository.findByUsername(username)
+            .orElseThrow(()-> new UsernameNotFoundException("User not found!"));
+
+    Todo t = new Todo(createTodoDTO.title(), createTodoDTO.content(), createTodoDTO.status(), user, new Date());
+
+    return new TodoDTO(
+            todoRepository.save(t).getId(),
+            t.getTitle(),
+            t.getContent(),
+            t.getStatus(),
+            t.getCreateAt(),
+            new UserDTO(t.getUser().getId(), t.getUser().getUsername(), t.getUser().getName()));
   }
 
   public List<TodoDTO> getAll(String username){

@@ -1,5 +1,6 @@
 package ar.mikellbobadilla.todo_app.controller;
 
+import ar.mikellbobadilla.todo_app.dto.CreateTodoDTO;
 import ar.mikellbobadilla.todo_app.dto.TodoDTO;
 import ar.mikellbobadilla.todo_app.entities.Todo;
 import ar.mikellbobadilla.todo_app.respositories.UserRepository;
@@ -33,10 +34,10 @@ public class TodoController {
   }
 
   @PostMapping("/create")
-  public ResponseEntity<Todo> create(@RequestBody TodoDTO todoDTO, HttpServletRequest request){
+  public ResponseEntity<TodoDTO> create(@RequestBody CreateTodoDTO todoDTO, HttpServletRequest request){
     String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
     String token = authHeader.substring(7);
-    Todo todo = todoService.create(todoDTO, jwtService.getSubject(token));
+    TodoDTO todo = todoService.create(todoDTO, jwtService.getSubject(token));
     return new ResponseEntity<>(todo, HttpStatus.CREATED);
   }
 
