@@ -38,6 +38,20 @@ public class ExceptionMapper {
     return new ResponseEntity<>(res, status);
   }
 
+  @ExceptionHandler(UserException.class)
+  public ResponseEntity<ErrorResponse> userException(UserException exc){
+    logger.log(new LogRecord(Level.SEVERE, exc.getMessage()));
+    ErrorResponse res = getResponse(HttpStatus.BAD_REQUEST, exc.getMessage());
+    return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(TodoException.class)
+  public ResponseEntity<ErrorResponse> todoException(TodoException exc){
+    logger.log(new LogRecord(Level.SEVERE, exc.getMessage()));
+    ErrorResponse res = getResponse(HttpStatus.NOT_FOUND, exc.getMessage());
+    return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
+  }
+
   private ErrorResponse getResponse(HttpStatus status, String message){
     return new ErrorResponse(status, message, new Date());
   }

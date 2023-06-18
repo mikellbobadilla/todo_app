@@ -5,6 +5,7 @@ import ar.mikellbobadilla.todo_app.dto.JwtDTO;
 import ar.mikellbobadilla.todo_app.dto.RegisterDTO;
 import ar.mikellbobadilla.todo_app.dto.UserDTO;
 import ar.mikellbobadilla.todo_app.entities.User;
+import ar.mikellbobadilla.todo_app.exceptions.UserException;
 import ar.mikellbobadilla.todo_app.services.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,9 +33,9 @@ public class AuthController {
   }
 
   @PostMapping("/register")
-  public ResponseEntity<UserDTO> register(@RequestBody RegisterDTO registerDTO){
+  public ResponseEntity<UserDTO> register(@RequestBody RegisterDTO registerDTO) throws UserException {
     User user = authService.register(registerDTO);
-    UserDTO response = new UserDTO(user.getId(), user.getUsername(), user.getName());
+    UserDTO response = new UserDTO(user.getId(), user.getUsername());
     logger.info("User Created!");
     return new ResponseEntity<>(response, HttpStatus.CREATED);
   }

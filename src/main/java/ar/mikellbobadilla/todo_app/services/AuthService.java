@@ -3,6 +3,7 @@ package ar.mikellbobadilla.todo_app.services;
 import ar.mikellbobadilla.todo_app.dto.AuthDTO;
 import ar.mikellbobadilla.todo_app.dto.RegisterDTO;
 import ar.mikellbobadilla.todo_app.entities.User;
+import ar.mikellbobadilla.todo_app.exceptions.UserException;
 import ar.mikellbobadilla.todo_app.respositories.UserRepository;
 import ar.mikellbobadilla.todo_app.services.impl.JwtService;
 import lombok.AllArgsConstructor;
@@ -34,7 +35,10 @@ public class AuthService {
     return jwtService.createToken(user);
   }
 
-  public User register(RegisterDTO registerDTO){
+  public User register(RegisterDTO registerDTO) throws UserException {
+    if(userRepository.findByUsername(registerDTO.username()).isPresent()){
+      throw new UserException("Username already exists!");
+    }
     User user = new User(
       registerDTO.username(),
       encoder.encode(registerDTO.password()),
