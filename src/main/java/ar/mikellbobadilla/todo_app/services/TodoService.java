@@ -30,12 +30,12 @@ public class TodoService {
     Todo t = new Todo(createTodoDTO.title(), createTodoDTO.content(), createTodoDTO.status(), user, new Date());
 
     return new TodoDTO(
-            todoRepository.save(t).getId(),
-            t.getTitle(),
-            t.getContent(),
-            t.getStatus(),
-            t.getCreateAt(),
-            new UserDTO(t.getUser().getId(), t.getUser().getUsername(), t.getUser().getName()));
+        todoRepository.save(t).getId(),
+        t.getTitle(),
+        t.getContent(),
+        t.getStatus(),
+        t.getCreateAt()
+    );
   }
 
   public List<TodoDTO> getAll(String username){
@@ -44,7 +44,6 @@ public class TodoService {
     }
     return parseTodos(todoRepository.getAllByUser(username));
   }
-
 
   private List<TodoDTO> parseTodos(List<Todo> todos){
     List<TodoDTO> todosResponse = new ArrayList<>();
@@ -55,12 +54,7 @@ public class TodoService {
           todo.getTitle(),
           todo.getContent(),
           todo.getStatus(),
-          todo.getCreateAt(),
-          new UserDTO(
-            todo.getUser().getId(),
-            todo.getUser().getUsername(),
-            todo.getUser().getName()
-          )
+          todo.getCreateAt()
         )
       );
     }

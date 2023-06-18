@@ -9,7 +9,6 @@ public record TodoDTO(
   String title,
   String content,
   Boolean status,
-  Date createAt,
-  UserDTO owner
+  Date createAt
 ) {
 }
