@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -50,6 +51,35 @@ public class TodoService {
     Todo t = todoRepository.getByUser(id, username)
       .orElseThrow(()-> new TodoException("Todo not found!"));
     return parseTodoDTO(t);
+  }
+
+  public TodoDTO update(TodoRequestDTO requestDTO, String username, Long id) throws TodoException {
+    Optional<Todo> t = todoRepository.findById(id);
+
+    if(t.isEmpty()){
+      throw new TodoException("Todo not found");
+    }
+    Todo todo = t.get();
+    if(!todo.getUser().getUsername().equals(username)){
+      throw new TodoException("Todo not found");
+    }
+    todo.setTitle(requestDTO.title());
+    todo.setContent(requestDTO.content());
+    todo.setStatus(requestDTO.status());
+    return parseTodoDTO(todoRepository.save(todo));
+  }
+
+  public String delete(Long id, String username) throws TodoException {
+    Optional<Todo> t = todoRepository.findById(id);
+    if(t.isEmpty()){
+      throw new TodoException("Todo not found!");
+    }
+    Todo todo = t.get();
+    if(!todo.getUser().getUsername().equals(username)){
+      throw new TodoException("Todo not found!");
+    }
+    todoRepository.deleteById(id);
+    return "Todo deleted!";
   }
 
   /* Parse Objects */

@@ -17,4 +17,6 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
           where t.id = ?1 and u.username = ?2  \s
           """, nativeQuery = true)
   Optional<Todo> getByUser(Long id, String username);
+
+
 }

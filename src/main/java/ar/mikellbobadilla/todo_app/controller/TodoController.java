@@ -14,6 +14,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/api/todos")
 @AllArgsConstructor
@@ -50,4 +54,22 @@ public class TodoController {
     return new ResponseEntity<>(todo, HttpStatus.OK);
   }
 
+  @PutMapping("/update")
+  public ResponseEntity<TodoDTO> update(@RequestParam(name = "id") Long id, HttpServletRequest request, @RequestBody TodoRequestDTO todoDTO) throws TodoException {
+    String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+    String token = authHeader.substring(7);
+    String username = jwtService.getSubject(token);
+    TodoDTO t = todoService.update(todoDTO, username, id);
+    return new ResponseEntity<>(t, HttpStatus.OK);
+  }
+
+  @DeleteMapping("/delete")
+  public ResponseEntity<Map<String, Object>> delete(@RequestParam(name = "id") Long id, HttpServletRequest request) throws TodoException {
+    String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+    String token = authHeader.substring(7);
+    String username = jwtService.getSubject(token);
+    Map<String, Object> map = new HashMap<>(1);
+    map.put("message", todoService.delete(id, username));
+    return new ResponseEntity<>(map, HttpStatus.OK);
+  }
 }
